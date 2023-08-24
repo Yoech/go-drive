@@ -40,9 +40,9 @@ func NewChunkUploader(config common.Config) (*ChunkUploader, error) {
 }
 
 func (c *ChunkUploader) CreateUpload(size, chunkSize int64) (ChunkUpload, error) {
-	if chunkSize < minChunkSize {
+	if chunkSize < int64(c.minChunkSize) {
 		return ChunkUpload{},
-			err.NewBadRequestError(i18n.T("api.chunk_uploader.chunk_size_cannot_less_than", strconv.Itoa(minChunkSize)))
+			err.NewBadRequestError(i18n.T("api.chunk_uploader.chunk_size_cannot_less_than", strconv.Itoa(c.minChunkSize)))
 	}
 	if size <= 0 {
 		return ChunkUpload{}, err.NewBadRequestError(i18n.T("api.chunk_uploader.invalid_file_size"))
