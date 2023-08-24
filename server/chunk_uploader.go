@@ -98,11 +98,11 @@ func (c *ChunkUploader) ChunkUpload(id string, seq int, reader io.Reader) error 
 	}()
 	written, e := io.Copy(chunk, reader)
 	if e != nil {
-		fmt.Printf("ChunkUpload.Copy.err[%v]", filePath, e)
+		fmt.Printf("ChunkUpload.Copy.filePath[%v].err[%v]\n", filePath, e)
 		return e
 	}
 	if written != chunkSize {
-		fmt.Printf("ChunkUpload.written[%v].chunkSize[%v].not equal", written, chunkSize)
+		fmt.Printf("ChunkUpload.written[%v].chunkSize[%v].not equal\n", written, chunkSize)
 		return err.NewBadRequestError(i18n.T("api.chunk_uploader.expected__bytes_but__bytes",
 			strconv.FormatInt(chunkSize, 10), strconv.FormatInt(written, 10)))
 	}
