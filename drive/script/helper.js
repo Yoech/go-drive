@@ -75,7 +75,7 @@ function defineInit(fn) {
   };
 }
 
-var LocalProviderChunkSize = 5 * 1024 * 1024;
+var LocalProviderChunkSize = 1 * 1024 * 1024;
 
 function useLocalProvider(size) {
   if (size <= LocalProviderChunkSize) {
