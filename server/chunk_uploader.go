@@ -19,8 +19,6 @@ import (
 	"github.com/google/uuid"
 )
 
-const minChunkSize = 5 * 1024 * 1024
-
 type ChunkUploader struct {
 	dir          string
 	minChunkSize int
