@@ -17,7 +17,7 @@ export default class LocalChunkUploadTask extends ChunkUploadTask {
       {
         method: 'post',
         url: '/chunk',
-        params: { size, chunkSize: 5 * 1024 * 1024 },
+        params: { size, chunkSize: 1 * 1024 * 1024 },
       },
       http
     )
