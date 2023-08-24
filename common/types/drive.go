@@ -151,7 +151,7 @@ const (
 )
 
 const (
-	LocalProviderChunkSize = 5 * 1024 * 1024
+	LocalProviderChunkSize = 1 * 1024 * 1024
 )
 
 func UseLocalProvider(size int64) *DriveUploadConfig {
