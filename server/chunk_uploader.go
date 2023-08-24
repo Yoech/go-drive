@@ -22,15 +22,20 @@ import (
 const minChunkSize = 5 * 1024 * 1024
 
 type ChunkUploader struct {
-	dir string
+	dir          string
+	minChunkSize int
 }
 
 func NewChunkUploader(config common.Config) (*ChunkUploader, error) {
+	defaultMinChunkSize := 5 * 1024 * 1024
+	if config.MinChunkSize > 0 {
+		defaultMinChunkSize = config.MinChunkSize
+	}
 	dir, e := config.GetTempDir("upload", true)
 	if e != nil {
 		return nil, e
 	}
-	return &ChunkUploader{dir}, nil
+	return &ChunkUploader{dir, defaultMinChunkSize}, nil
 }
 
 func (c *ChunkUploader) CreateUpload(size, chunkSize int64) (ChunkUpload, error) {
@@ -79,8 +84,10 @@ func (c *ChunkUploader) ChunkUpload(id string, seq int, reader io.Reader) error 
 	if seq == upload.Chunks-1 {
 		chunkSize = upload.Size % upload.ChunkSize
 	}
-	chunk, e := os.OpenFile(c.getChunk(upload, seq), os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0644)
+	filePath := c.getChunk(upload, seq)
+	chunk, e := os.OpenFile(filePath, os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0644)
 	if e != nil {
+		fmt.Printf("ChunkUpload.OpenFile.filePath[%v].err[%v]", filePath, e)
 		return e
 	}
 	success := false
@@ -92,9 +99,11 @@ func (c *ChunkUploader) ChunkUpload(id string, seq int, reader io.Reader) error 
 	}()
 	written, e := io.Copy(chunk, reader)
 	if e != nil {
+		fmt.Printf("ChunkUpload.Copy.err[%v]", filePath, e)
 		return e
 	}
 	if written != chunkSize {
+		fmt.Printf("ChunkUpload.written[%v].chunkSize[%v].not equal", written, chunkSize)
 		return err.NewBadRequestError(i18n.T("api.chunk_uploader.expected__bytes_but__bytes",
 			strconv.FormatInt(chunkSize, 10), strconv.FormatInt(written, 10)))
 	}

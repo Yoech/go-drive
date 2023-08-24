@@ -74,6 +74,8 @@ type Config struct {
 	APIPath string `yaml:"api-path"`
 	WebPath string `yaml:"web-path"`
 
+	MinChunkSize int `yaml:"min-chunk-size"`
+
 	// all data will be stored in DataDir
 	DataDir string `yaml:"data-dir"`
 	TempDir string `yaml:"temp-dir"`
