@@ -28,6 +28,7 @@ type ChunkUploader struct {
 
 func NewChunkUploader(config common.Config) (*ChunkUploader, error) {
 	defaultMinChunkSize := 5 * 1024 * 1024
+	fmt.Printf("NewChunkUploader.config.MinChunkSize[%v]", config.MinChunkSize)
 	if config.MinChunkSize > 0 {
 		defaultMinChunkSize = config.MinChunkSize
 	}
