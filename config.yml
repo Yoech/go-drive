@@ -9,7 +9,7 @@ db:
   # for mysql: the database name
   name: go-drive
   # database host, for mysql only
-  host: 192.168.3.14
+  host: 192.168.5.7
   # database port, for mysql only
   port: 3307
   # database username, for mysql only
@@ -30,21 +30,23 @@ db:
 # - temp: Temp dir
 # - thumbnails: Thumbnail cache dir
 # - data.db: SQLite database file
-data-dir: ./app/data
+data-dir: /opt/data
 
 # Temp dir. Default is data-dir/temp
 temp-dir: ""
 
 # Web static files dir.
-web-dir: ./app/web
+web-dir: /opt/data/web
 
 # i18n languages
-lang-dir: ./app/lang
+lang-dir: /opt/data/lang
 # If the client's language is not supported, then this language will be used
 default-lang: en-US
 
 # Concurrent task. eg. copy, move, delete
 max-concurrent-task: 100
+
+min-chunk-size: 1048576
 
 # Disable 'Local Drive' file path limitation.
 # Set to false if you want 'Local Drive' path is always relative to DATA-DIR/local
