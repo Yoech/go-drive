@@ -8,7 +8,7 @@ zip: $(build_dir)/$(target_name).zip
 
 # tar.gz
 $(build_dir)/$(target_name).tar.gz: $(build_dir)/$(target_name)
-	cd $(work_dir); tar acf $(target_name).tar.gz $(target_name)
+	cd $(work_dir); tar acf $(target_name).tar.gz --owner=0 --group=0 $(target_name)
 
 # zip for windows
 $(build_dir)/$(target_name).zip: $(build_dir)/$(target_name)
