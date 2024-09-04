@@ -46,7 +46,7 @@ default-lang: en-US
 # Concurrent task. eg. copy, move, delete
 max-concurrent-task: 100
 
-min-chunk-size: 1048576
+min-chunk-size: 5242880
 
 # Disable 'Local Drive' file path limitation.
 # Set to false if you want 'Local Drive' path is always relative to DATA-DIR/local

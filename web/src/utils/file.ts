@@ -41,25 +41,51 @@ async function resolveEntry(
     })
   } else if (entry.isDirectory) {
     const dir = entry as FileSystemDirectoryEntry
+    const reader = dir.createReader()
     return {
       type: 'dir',
       path: entry.fullPath,
       children: await new Promise((resolve, reject) => {
-        dir.createReader().readEntries(async (entries) => {
-          const children = []
-          for (const entry of entries) {
-            try {
-              children.push(await resolveEntry(entry, breakpoint))
-            } catch (e) {
-              return reject(e)
-            }
-          }
-          resolve(children)
-        }, reject)
+        // dir.createReader().readEntries(async (entries) => {
+        //   const children = []
+        //   for (const entry of entries) {
+        //     try {
+        //       children.push(await resolveEntry(entry, breakpoint))
+        //     } catch (e) {
+        //       return reject(e)
+        //     }
+        //   }
+        //   resolve(children)
+        // }, reject)
+
+        onReadEntriesIter(resolve, reject, reader, breakpoint)
       }),
     }
   }
   throw new Error('unreachable')
+}
+
+export async function onReadEntriesIter(resolve: any, reject: any, reader: FileSystemDirectoryReader, breakpoint: any) {
+  const children: ResolvedEntry[] = []
+  const read = async function () {
+    const entries: FileSystemEntry[] = await new Promise((resolve, reject) => {
+      reader.readEntries(entries => {
+        resolve(entries)
+      }, reject)
+    })
+    if (entries.length > 0) {
+      for (const entry of entries) {
+        try {
+          children.push(await resolveEntry(entry, breakpoint))
+        } catch (e) {
+          return reject(e)
+        }
+      }
+      await read()
+    }
+  }
+  await read()
+  resolve(children)
 }
 
 export async function resolveEntries(
