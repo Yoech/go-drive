@@ -42,6 +42,6 @@ goto:eof
 
 :runtime
 cd .\\build\\go-drive_build
-start go-drive.exe -c=config2.yml
+start go-drive.exe -c=config.yml
 cd ..\\..\\
 goto:eof
