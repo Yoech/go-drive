@@ -81,7 +81,10 @@ func (c *ChunkUploader) ChunkUpload(id string, seq int, reader io.Reader) error 
 	}
 	chunkSize := upload.ChunkSize
 	if seq == upload.Chunks-1 {
-		chunkSize = upload.Size % upload.ChunkSize
+		// fix the bug: it can cause `written != chunkSize` when `upload.Size % upload.ChunkSize == 0`
+		if upload.Size%upload.ChunkSize > 0 {
+			chunkSize = upload.Size % upload.ChunkSize
+		}
 	}
 	filePath := c.getChunk(upload, seq)
 	chunk, e := os.OpenFile(filePath, os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0644)
