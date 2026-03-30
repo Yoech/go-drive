@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "Web Application for go-drive",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --debug",
     "build-monaco-editor": "cd monaco-editor && npm install && npm run build",
     "build-web": "vue-tsc --noEmit && vite build",
     "build": "npm run build-monaco-editor && npm run build-web",
